@@ -5,28 +5,37 @@ public class Board {
     private boolean[][] board;
 
     public Board(int x, int y) {
-
         board = new boolean[x][y];
     }
 
-    public void generateBoard() {
-        board[1][1] = true;
-        board[1][2] = true;
-        board[1][3] = true;
+    public void generateBoard(int aliveCells) {
+        for (int i = 0; i < aliveCells; ) {
+            int x = (int) (Math.random() * board.length);
+            int y = (int) (Math.random() * board[0].length);
+            boolean alive = board[x][y];
+            if (alive) {
+                continue;
+            }
+            board[x][y] = true;
+            i++;
+        }
     }
 
     public void printBoard() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                System.out.print(board[i][j] ? '*' : '.');
+        printBoard(board);
+    }
+
+    public void printBoard(boolean[][] board) {
+        for (boolean[] booleans : board) {
+            for (boolean aBoolean : booleans) {
+                System.out.print(aBoolean ? '*' : '.');
             }
             System.out.println();
         }
         System.out.println();
-        nextGeneration();
     }
 
-    private void nextGeneration() {
+    public boolean[][] nextGeneration() {
         boolean[][] temp = new boolean[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
@@ -38,6 +47,7 @@ public class Board {
             }
         }
         board = temp;
+        return board;
     }
 
     private int countNeighbours(int x, int y) {
@@ -50,6 +60,4 @@ public class Board {
         }
         return neighbours;
     }
-
-
 }
